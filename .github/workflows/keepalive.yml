@@ -1,0 +1,36 @@
+
+name: Streamlit Keep Alive
+
+on:
+  schedule:
+    # Ejecutar cada 6 horas
+    - cron: "23 */6 * * *"
+
+  # Permite ejecutarlo manualmente
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Streamlit application
+        run: |
+          URL="https://TU-URL-REAL.streamlit.app"
+
+          echo "Checking Caribbean Marine Intelligence..."
+
+          HTTP_STATUS=$(curl -L -sS \
+            --max-time 120 \
+            -o /dev/null \
+            -w "%{http_code}" \
+            "$URL")
+
+          echo "HTTP Status: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 400 ]; then
+            echo "Application did not respond successfully"
+            exit 1
+          fi
+
+          echo "Request completed successfully"
