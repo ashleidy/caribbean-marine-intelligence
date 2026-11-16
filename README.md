@@ -57,6 +57,3 @@ colisiona con el paquete `analytics/` en `sys.path`.
 La API gratuita de Open-Meteo es para **uso no comercial** (atribución CC BY 4.0); para ofrecer esto a hoteles/empresas
 hace falta su plan comercial. Mapas: imágenes NASA GIBS (uso libre con atribución) y estilos Carto (el código ya lee claves desde `st.secrets`/entorno).
 
-## Hoja de ruta
-
-Alertas por correo/Telegram, boyas NDBC/ERDDAP en el mapa, UHSLC para nivel del mar, i18n ES/EN, PDF del reporte.
