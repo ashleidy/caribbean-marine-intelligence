@@ -1,0 +1,15 @@
+# Tropical-ocean theme (deep teal + turquoise + coral/sun accents)
+[theme]
+base = "dark"
+primaryColor = "#14D9C4"
+backgroundColor = "#05202D"
+secondaryBackgroundColor = "#0B3A4F"
+textColor = "#E6F7FA"
+font = "sans serif"
+
+[server]
+headless = true
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
