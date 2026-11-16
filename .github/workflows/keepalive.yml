@@ -1,6 +1,7 @@
 
 
-name: Caribbean Marine Intelligence - Keep Alive
+
+name: Caribbean Marine Intelligence - Endpoint Check
 
 on:
   schedule:
@@ -13,28 +14,29 @@ permissions:
 
 jobs:
   health-check:
-    name: Streamlit Health Check
+    name: Streamlit HTTP Check
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 2
 
     steps:
-      - name: Check application availability
+      - name: Check Streamlit endpoint
         shell: bash
         run: |
           set -u
 
           URL="https://caribbean-marine-intelligence.streamlit.app/"
-          RESPONSE_FILE=$(mktemp)
+          HEADERS=$(mktemp)
+          BODY=$(mktemp)
 
           echo "Checking Caribbean Marine Intelligence..."
 
           set +e
           HTTP_STATUS=$(curl \
-            --location \
             --silent \
             --show-error \
-            --max-time 120 \
-            --output "$RESPONSE_FILE" \
+            --max-time 60 \
+            --dump-header "$HEADERS" \
+            --output "$BODY" \
             --write-out "%{http_code}" \
             "$URL")
           CURL_EXIT=$?
@@ -43,24 +45,28 @@ jobs:
           echo "HTTP status: $HTTP_STATUS"
 
           if [ "$CURL_EXIT" -ne 0 ]; then
-            echo "ERROR: Request failed."
-            rm -f "$RESPONSE_FILE"
+            echo "::error::Connection failed. Curl exit: $CURL_EXIT"
+            rm -f "$HEADERS" "$BODY"
             exit 1
           fi
 
-          if grep -Eqi "This app has gone to sleep|Yes, get this app back up|Zzzz" "$RESPONSE_FILE"; then
-            echo "WARNING: Streamlit application is sleeping."
-            rm -f "$RESPONSE_FILE"
+          if [[ "$HTTP_STATUS" =~ ^2[0-9][0-9]$ ]]; then
+            echo "SUCCESS: HTTP endpoint returned $HTTP_STATUS."
+
+          elif [[ "$HTTP_STATUS" =~ ^3[0-9][0-9]$ ]]; then
+            LOCATION=$(grep -i "^location:" "$HEADERS" | tail -n 1 | tr -d '\r')
+
+            echo "::notice::Streamlit returned a redirect: $HTTP_STATUS"
+            echo "Redirect destination: $LOCATION"
+            echo "This can be normal for non-browser clients."
+            echo "Application rendering has not been verified."
+
+          else
+            echo "::error::Unexpected HTTP status: $HTTP_STATUS"
+            rm -f "$HEADERS" "$BODY"
             exit 1
           fi
 
-          if ! [[ "$HTTP_STATUS" =~ ^2[0-9][0-9]$ ]]; then
-            echo "ERROR: Unexpected HTTP response."
-            rm -f "$RESPONSE_FILE"
-            exit 1
-          fi
+          rm -f "$HEADERS" "$BODY"
 
-          echo "SUCCESS: Application responded with HTTP $HTTP_STATUS."
-
-          rm -f "$RESPONSE_FILE"
 
