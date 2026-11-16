@@ -18,7 +18,7 @@ Python + Streamlit, 100 % fuentes públicas/gratuitas, sin claves ni base de dat
 | GDACS (ONU / Comisión Europea) | `https://www.gdacs.org/gdacsapi/api` (sin clave): ciclones de **todas** las cuencas (Asia, Índico, Oceanía), con datos JTWC/NOAA. NHC manda dentro de sus cuencas; GDACS cubre el resto |
 | NASA GIBS | Mosaico satelital diario VIIRS a color real como fondo del mapa (`gibs.earthdata.nasa.gov/wmts`) |
 
-El nivel del mar proviene del modelo de Open-Meteo y se rotula como tal. (La carga de archivos DIMAR/CECOLDO se retiró de la interfaz a petición del proyecto.)
+El nivel del mar proviene del modelo de Open-Meteo y se rotula como tal.
 
 ## Novedades de la interfaz
 
