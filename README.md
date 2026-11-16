@@ -1,24 +1,12 @@
 # 🌊 Caribbean Marine Intelligence
 
 Monitoring, oceanographic and weather analysis, and tropical cyclone tracking for the Caribbean, with an initial focus on
-**Providencia y Santa Catalina, Colombia** (13.34, -81.37; las dos islas se muestran como un solo punto). La interfaz está 100 % en inglés y pensada para público no científico.
+**Providencia y Santa Catalina, Colombia** . 
 Python + Streamlit, 100 % fuentes públicas/gratuitas, sin claves ni base de datos de pago.
 
 > This platform is an independent data visualization and analytics project. It does not replace official
 > meteorological, maritime or emergency warnings.
 
-## Ejecutar
-
-```bash
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-streamlit run app.py
-pytest -q                                               # pruebas offline (sin red)
-```
-
-**Streamlit Community Cloud:** sube el repo a GitHub → *New app* → archivo principal `app.py`. No se necesitan secrets
-para el MVP (`.streamlit/secrets.toml.example` muestra dónde irían). El disco de Streamlit Cloud es **efímero**: el
-SQLite/Parquet local se reconstruye tras un reinicio.
 
 ## Fuentes (verificadas contra su documentación)
 
